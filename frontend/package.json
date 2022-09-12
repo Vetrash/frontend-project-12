@@ -1,10 +1,9 @@
 {
-  "name": "frontend-project-12",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "main": "index.js",
+  "proxy": "http://localhost:5001",
   "dependencies": {
-    "@hexlet/chat-server": "^1.1.6",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -14,10 +13,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "build": "npm run build --prefix frontend",
-    "start": "start-server -s ./frontend/build",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "cd frontend && npm ci"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
