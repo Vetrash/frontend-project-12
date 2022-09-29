@@ -17,6 +17,7 @@ import {
 import RenderModal from '../Components/modalAddChannel.js';
 
 const Chat = (props) => {
+  const regex = /^[\u0400-\u04FF]+$/;
   const dispatch = useDispatch();
   const { channels, messages } = useSelector((state) => state.users.data);
   const { UI, activChatId } = useSelector((state) => state.users);
@@ -160,6 +161,8 @@ const Chat = (props) => {
     },
     onSubmit: (values) => {
       if (values.message.length !== 0) {
+        const lngName = regex.test(values.message) ? 'ru' : 'en';
+        filter.loadDictionary(lngName);
         const cenztext = filter.clean(values.message);
         socket.emit('newMessage', {
           body: cenztext,

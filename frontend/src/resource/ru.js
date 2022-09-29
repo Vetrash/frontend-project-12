@@ -58,7 +58,7 @@ export default {
     toast: {
       NewChannel: 'Канал создан',
       RenameChannel: 'Канал переименован',
-      RemoveChannel: 'Канал удален',
+      RemoveChannel: 'Канал удалён',
     },
   },
 };

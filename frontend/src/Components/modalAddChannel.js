@@ -15,7 +15,8 @@ import {
 import validator from './validator.js';
 
 const RenderModal = (socket) => {
-  filter.loadDictionary('ru');
+  const regex = /^[\u0400-\u04FF]+$/;
+
   const { activChatId, idSelectedChannel } = useSelector((state) => state.users);
   const { NameChannelsArr } = useSelector((state) => state.users.data);
   const dispatch = useDispatch();
@@ -32,8 +33,11 @@ const RenderModal = (socket) => {
       rename: '',
     },
     onSubmit: (values) => {
+      const lngName = regex.test(values.name) ? 'ru' : 'en';
+      const lngRename = regex.test(values.rename) ? 'ru' : 'en';
       switch (modalType) {
         case 'add':
+          filter.loadDictionary(lngName);
           if (filter.check(values.name)) {
             dispatch(setErrorLog('badWord'));
             dispatch(setErrorPlace('add'));
@@ -63,6 +67,7 @@ const RenderModal = (socket) => {
           closeModal();
           break;
         case 'rename':
+          filter.loadDictionary(lngRename);
           if (filter.check(values.rename)) {
             dispatch(setErrorLog('badWord'));
             dispatch(setErrorPlace('rename'));
