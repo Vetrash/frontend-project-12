@@ -124,7 +124,7 @@ const SignUp = () => {
                       onBlur={validUsername}
                       value={formik.values.username}
                     />
-                    <label className="form-label" htmlFor="username">{i18n.t('youNick')}</label>
+                    <label className="form-label" htmlFor="username">{i18n.t('nameUser')}</label>
                     <div className="invalid-tooltip">{i18n.t(`errorlogin.${valid.errorName}`)}</div>
                   </div>
                   <div className="form-floating mb-3">

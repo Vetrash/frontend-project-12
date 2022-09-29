@@ -13,4 +13,7 @@
 .mybtn{
     flex: 1 1 auto;
 }
+.displayNone{
+  display: none;
+}
 
