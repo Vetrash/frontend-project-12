@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import cn from 'classnames';
 import i18n from 'i18next';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import filter from 'leo-profanity';
 import {
@@ -19,7 +19,7 @@ import RenderModal from '../Components/modalAddChannel.js';
 const Chat = (props) => {
   const regex = /^[\u0400-\u04FF]+$/;
   const dispatch = useDispatch();
-  const { channels, messages } = useSelector((state) => state.users.data);
+  const { channels, messages, dataLoad } = useSelector((state) => state.users.data);
   const { UI, activChatId } = useSelector((state) => state.users);
   const { socket } = props;
   const login = localStorage.getItem('login');
@@ -28,6 +28,13 @@ const Chat = (props) => {
   const chanelRef = useRef();
   const removeRef = useRef();
   const renameRef = useRef();
+
+  const loading = () => (
+    <div className={cn('h-100', 'position-relative', { 'd-none': dataLoad })}>
+      <img className="position-absolute top-50 start-50 translate-middle" src="./img/loading.gif" alt="loading" />
+    </div>
+  );
+
   const getNewData = () => {
     axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
 
@@ -43,9 +50,8 @@ const Chat = (props) => {
 
   const handleClick = (e) => {
     const targetClick = e.target;
-    let IsdropdownItem = false;
-    if (targetClick.classList.contains('dropdown-item') || targetClick.classList.contains('dropdown-toggle')
-    ) { IsdropdownItem = true; }
+    const IsdropdownItem = (targetClick.classList.contains('dropdown-item') || targetClick.classList.contains('dropdown-toggle')
+    );
     if (!IsdropdownItem && UI.IsdropdownItem !== -1) {
       dropMenuRef.current.classList.remove('show');
       dispatch(swithDropMenu(-1));
@@ -57,7 +63,9 @@ const Chat = (props) => {
     document.addEventListener('click', handleClick);
   }, []);
   useEffect(() => {
-    chatref.current.scrollTop = chatref.current.scrollHeight;
+    if (messages.length !== 0) {
+      chatref.current.scrollTop = chatref.current.scrollHeight;
+    }
   }, [messages]);
 
   const clickhandlerlogOut = () => {
@@ -181,10 +189,8 @@ const Chat = (props) => {
   };
 
   const renderChat = () => {
-    let activChat = 'general';
-    channels.forEach((elem) => {
-      if (elem.id === activChatId) { activChat = elem.name; }
-    });
+    const activChat = channels.find((elem) => elem.id === activChatId);
+    const nameActivChat = activChat !== undefined ? activChat.name : 'error';
 
     const allMessage = [...messages].filter((elem) => elem.channelId === activChatId);
     const count = allMessage.length === 11 ? 10 : allMessage.length % 10;
@@ -193,7 +199,7 @@ const Chat = (props) => {
         <div className="d-flex flex-column h-100">
           <div className="bg-light mb-4 p-3 shadow-sm small">
             <p className="m-0">
-              <b>{`# ${activChat}`}</b>
+              <b>{`# ${nameActivChat}`}</b>
             </p>
             <span className="text-muted">
               {allMessage.length}
@@ -244,10 +250,9 @@ const Chat = (props) => {
       </div>
     );
   };
-
-  return (
+  const fullChat = () => (
     <>
-      <div className="h-100">
+      <div className={cn('h-100', { 'd-none': !dataLoad })}>
         <div className="h-100" id="chat">
           <div className="d-flex flex-column h-100">
             <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
@@ -275,6 +280,13 @@ const Chat = (props) => {
         </div>
       </div>
       {RenderModal(socket)}
+    </>
+  );
+
+  return (
+    <>
+      {loading()}
+      {fullChat()}
     </>
   );
 };

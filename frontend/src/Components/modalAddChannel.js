@@ -162,28 +162,25 @@ const RenderModal = (socket) => {
     }
   };
 
-  let render = '';
-  if (UI.modalShow) {
-    render = (
-      <>
-        <div className="fade modal-backdrop show" />
-        <div role="dialog" aria-modal="true" className="fade modal show dBlock" tabIndex="-1">
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <div className="modal-title h4">{i18n.t(`titleModal.${modalType}`)}</div>
-                <button onClick={closeModal} type="button" aria-label="Close" data-bs-dismiss="modal" className="btn btn-close" />
-              </div>
-              <div className="modal-body">
-                {bodyModal()}
-              </div>
+  const render = (
+    <>
+      <div className="fade modal-backdrop show" />
+      <div role="dialog" aria-modal="true" className="fade modal show dBlock" tabIndex="-1">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <div className="modal-title h4">{i18n.t(`titleModal.${modalType}`)}</div>
+              <button onClick={closeModal} type="button" aria-label="Close" data-bs-dismiss="modal" className="btn btn-close" />
+            </div>
+            <div className="modal-body">
+              {bodyModal()}
             </div>
           </div>
         </div>
-      </>
-    );
-  }
-  return render;
+      </div>
+    </>
+  );
+  return UI.modalShow ? render : '';
 };
 
 export default RenderModal;

@@ -1,7 +1,6 @@
 import React from 'react';
 import i18n from 'i18next';
 import intervalPlural from 'i18next-intervalplural-postprocessor';
-
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider, ErrorBoundary } from '@rollbar/react';
@@ -37,7 +36,9 @@ const App = (props) => {
           <Routes>
             <Route
               path="/"
-              element={localToken !== null ? <Chat socket={socket} /> : <Navigate to="/login" />}
+              element={
+                localToken !== null ? <Chat socket={socket} /> : <Navigate to="/login" />
+              }
             />
             <Route
               path="/login"

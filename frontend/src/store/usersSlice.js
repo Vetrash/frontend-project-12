@@ -14,6 +14,7 @@ const usersSlice = createSlice({
       channels: [],
       messages: [],
       NameChannelsArr: [],
+      dataLoad: false,
     },
     activChatId: 1,
     UI: {
@@ -33,6 +34,7 @@ const usersSlice = createSlice({
       state.data.channels = action.payload.channels;
       state.data.messages = action.payload.messages;
       state.data.NameChannelsArr = newNameChannelsArr;
+      state.data.dataLoad = true;
     },
     setChannel(state, action) {
       state.activChatId = action.payload;

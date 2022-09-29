@@ -10,7 +10,6 @@ import { signIn } from '../store/usersSlice.js';
 const Authorization = () => {
   const dispatch = useDispatch();
   const [logErr, setLogErr] = useState('none');
-
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -23,6 +22,7 @@ const Authorization = () => {
           const { token, username } = res.data;
           localStorage.setItem('token', token);
           localStorage.setItem('login', username);
+          // getdata();
           dispatch(signIn({
             login: username,
             token,
