@@ -17,7 +17,6 @@ import {
 import RenderModal from '../Components/modalAddChannel.js';
 
 const Chat = (props) => {
-  filter.loadDictionary('ru');
   const dispatch = useDispatch();
   const { channels, messages } = useSelector((state) => state.users.data);
   const { UI, activChatId } = useSelector((state) => state.users);

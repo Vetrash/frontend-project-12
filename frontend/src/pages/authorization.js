@@ -47,7 +47,7 @@ const Authorization = () => {
           id="username"
           className={cn('form-control', { 'is-invalid': logErr !== 'none' })}
         />
-        <label htmlFor="username">{i18n.t('youNick')}</label>
+        <label htmlFor="username">{i18n.t('nameUser')}</label>
         <div className="invalid-tooltip">{i18n.t(`errorlogin.${logErr}`)}</div>
       </div>
       <div className="form-floating mb-4">

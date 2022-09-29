@@ -7,8 +7,10 @@ export default {
       key_many: ' сообщений',
       key_other: ' сообщений',
     },
+    nameChannel: 'Имя канала',
     enter: 'Войти',
-    youNick: 'Имя пользователя',
+    nameUser: 'Имя пользователя',
+    youNick: 'Ваш ник',
     password: 'Пароль',
     confirmPassword: 'Подтвердите пароль',
     logo: 'Hexlet Chat',
@@ -38,13 +40,13 @@ export default {
       badWord: 'Нецензурные слова запрещены',
     },
     errorlogin: {
-      lengthError: 'Имя должно содержать не менее 3 и не более 20 символов',
+      lengthError: 'От 3 до 20 символов',
       required: 'Поле должно быть заполнено',
       cloneLogin: 'Пользователь с таким именем уже существует',
-      UnknownUser: 'Неверный логин или пароль',
+      UnknownUser: 'Неверные имя пользователя или пароль',
     },
     errorPassword: {
-      lengthError: 'Пароль должен содержать не менее 6 символов',
+      lengthError: 'Не менее 6 символов',
       required: 'Поле должно быть заполнено',
     },
     errorConfirmPassword: {

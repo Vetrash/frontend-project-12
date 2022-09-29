@@ -102,6 +102,7 @@ const RenderModal = (socket) => {
                 onChange={formik.handleChange}
                 value={formik.values.name}
               />
+              <label className="visually-hidden" htmlFor="name">{i18n.t('nameChannel')}</label>
               <div className="invalid-feedback">{i18n.t(`error.${errorlog}`)}</div>
               <div className="d-flex justify-content-end">
                 <button onClick={closeModal} type="button" className="me-2 btn btn-secondary">{i18n.t('cancel')}</button>
@@ -121,6 +122,7 @@ const RenderModal = (socket) => {
                 onChange={formik.handleChange}
                 value={formik.values.rename}
               />
+              <label className="visually-hidden" htmlFor="rename">{i18n.t('nameChannel')}</label>
               <div className="invalid-feedback">{i18n.t(`error.${errorlog}`)}</div>
               <div className="d-flex justify-content-end">
                 <button onClick={closeModal} type="button" className="me-2 btn btn-secondary">{i18n.t('cancel')}</button>
