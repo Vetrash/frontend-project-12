@@ -7,6 +7,8 @@ export default {
       key_many: ' сообщений',
       key_other: ' сообщений',
     },
+    channelControl: 'Управление каналом',
+    addChanel: '+',
     nameChannel: 'Имя канала',
     enter: 'Войти',
     nameUser: 'Имя пользователя',

@@ -127,7 +127,7 @@ const Chat = (props) => {
                 aria-expanded="false"
                 className={cn('flex-grow-0 dropdown-toggle dropdown-toggle-split btn', { 'btn-secondary': Number(item.id) === activChatId })}
               >
-                <span className="visually-hidden">Управление каналом</span>
+                <span className="visually-hidden">{i18n.t('channelControl')}</span>
               </button>
             </div>
           </li>
@@ -260,6 +260,7 @@ const Chat = (props) => {
                     <span>{i18n.t('channels')}</span>
                     <button onClick={addChannel} type="button" className="p-0 text-primary btn btn-group-vertical">
                       <img src="./img/add_box.svg" alt="add" />
+                      <span className="visually-hidden">{i18n.t('addChanel')}</span>
                     </button>
                   </div>
                   {renderChannelsList()}
