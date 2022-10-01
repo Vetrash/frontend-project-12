@@ -8,20 +8,30 @@ import filter from 'leo-profanity';
 import {
   setChannel,
   removeChannel,
+  onWaitSwitchChanell,
+} from '../store/chatSlice.js';
+import {
   setErrorLog,
-  setErrorPlace,
   modalSwitch,
-} from '../store/usersSlice.js';
+} from '../store/modalSlice.js';
 import validator from './validator.js';
+import {
+  ToastNewChannel,
+  ToastRenameChannel,
+  ToastRemoveChannel,
+} from './toasts.js';
 
 const RenderModal = (socket) => {
   const regex = /^[\u0400-\u04FF]+$/;
 
-  const { activChatId, idSelectedChannel } = useSelector((state) => state.users);
-  const { NameChannelsArr } = useSelector((state) => state.users.data);
+  const { activChatId, idSelectedChannel, NameChannelsArr } = useSelector((state) => state.chat);
   const dispatch = useDispatch();
-  const { UI } = useSelector((state) => state.users);
-  const { modalType, errorPlace, errorlog } = useSelector((state) => state.users.UI);
+  const {
+    modalType,
+    errorPlace,
+    errorlog,
+    modalShow,
+  } = useSelector((state) => state.modal);
 
   const closeModal = () => {
     dispatch(modalSwitch(false));
@@ -39,21 +49,20 @@ const RenderModal = (socket) => {
         case 'add':
           filter.loadDictionary(lngName);
           if (filter.check(values.name)) {
-            dispatch(setErrorLog('badWord'));
-            dispatch(setErrorPlace('add'));
+            dispatch(setErrorLog({ log: 'badWord', place: 'add' }));
           } else {
             validator(NameChannelsArr, values.name)
               .then(() => {
-              // eslint-disable-next-line react/destructuring-assignment
+                dispatch(onWaitSwitchChanell());
+                // eslint-disable-next-line react/destructuring-assignment
                 socket.emit('newChannel', { name: values.name });
                 values.name = '';
+                ToastNewChannel();
                 closeModal();
-                dispatch(setErrorLog('none'));
-                dispatch(setErrorPlace('none'));
+                dispatch(setErrorLog({ log: 'none', place: 'none' }));
               })
               .catch((err) => {
-                dispatch(setErrorLog(err.message));
-                dispatch(setErrorPlace('add'));
+                dispatch(setErrorLog({ log: err.message, place: 'add' }));
               });
           }
           break;
@@ -64,26 +73,25 @@ const RenderModal = (socket) => {
           // eslint-disable-next-line react/destructuring-assignment
           socket.emit('removeChannel', { id: idSelectedChannel });
           dispatch(removeChannel(idSelectedChannel));
+          ToastRemoveChannel();
           closeModal();
           break;
         case 'rename':
           filter.loadDictionary(lngRename);
           if (filter.check(values.rename)) {
-            dispatch(setErrorLog('badWord'));
-            dispatch(setErrorPlace('rename'));
+            dispatch(setErrorLog({ log: 'badWord', place: 'rename' }));
           } else {
             validator(NameChannelsArr, values.rename)
               .then(() => {
                 // eslint-disable-next-line react/destructuring-assignment
                 socket.emit('renameChannel', { id: idSelectedChannel, name: values.rename });
                 values.rename = '';
+                ToastRenameChannel();
                 closeModal();
-                dispatch(setErrorLog('none'));
-                dispatch(setErrorPlace('none'));
+                dispatch(setErrorLog({ log: 'none', place: 'none' }));
               })
               .catch((err) => {
-                dispatch(setErrorLog(err.message));
-                dispatch(setErrorPlace('rename'));
+                dispatch(setErrorLog({ log: err.message, place: 'rename' }));
               });
           }
           break;
@@ -180,7 +188,7 @@ const RenderModal = (socket) => {
       </div>
     </>
   );
-  return UI.modalShow ? render : '';
+  return modalShow ? render : '';
 };
 
 export default RenderModal;

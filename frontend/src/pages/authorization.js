@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import i18n from 'i18next';
 import cn from 'classnames';
-import { signIn } from '../store/usersSlice.js';
+import { signIn } from '../store/userSlice.js';
 
 const Authorization = () => {
   const dispatch = useDispatch();
@@ -22,7 +22,6 @@ const Authorization = () => {
           const { token, username } = res.data;
           localStorage.setItem('token', token);
           localStorage.setItem('login', username);
-          // getdata();
           dispatch(signIn({
             login: username,
             token,

@@ -10,7 +10,7 @@ import {
   validatePassword,
   validateConfirmPassword,
 } from '../Components/validator.js';
-import { signIn } from '../store/usersSlice.js';
+import { signIn } from '../store/userSlice.js';
 
 const SignUp = () => {
   const dispatch = useDispatch();

@@ -6,21 +6,24 @@ import i18n from 'i18next';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import filter from 'leo-profanity';
+import { signOff } from '../store/userSlice.js';
 import {
   updateData,
   setChannel,
-  modalSwitch,
-  swithDropMenu,
   setidSelectedChannel,
-  signOff,
-} from '../store/usersSlice.js';
+} from '../store/chatSlice.js';
+import { modalSwitch } from '../store/modalSlice.js';
 import RenderModal from '../Components/modalAddChannel.js';
 
 const Chat = (props) => {
   const regex = /^[\u0400-\u04FF]+$/;
   const dispatch = useDispatch();
-  const { channels, messages, dataLoad } = useSelector((state) => state.users.data);
-  const { UI, activChatId } = useSelector((state) => state.users);
+  const {
+    channels,
+    messages,
+    dataLoad,
+    activChatId,
+  } = useSelector((state) => state.chat);
   const { socket } = props;
   const login = localStorage.getItem('login');
   const chatref = useRef();
@@ -52,9 +55,8 @@ const Chat = (props) => {
     const targetClick = e.target;
     const IsdropdownItem = (targetClick.classList.contains('dropdown-item') || targetClick.classList.contains('dropdown-toggle')
     );
-    if (!IsdropdownItem && UI.IsdropdownItem !== -1) {
+    if (!IsdropdownItem) {
       dropMenuRef.current.classList.remove('show');
-      dispatch(swithDropMenu(-1));
     }
   };
 
@@ -92,7 +94,6 @@ const Chat = (props) => {
   };
   const activDropMenu = (elem) => {
     const newID = Number(elem.target.attributes.id.value);
-    dispatch(swithDropMenu(newID));
     const { pageY } = elem;
     const posY = pageY - 82;
     const posX = chanelRef.current.offsetWidth / 1.5 + chanelRef.current.offsetLeft;

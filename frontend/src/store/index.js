@@ -1,8 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userReduser from './usersSlice.js';
+import chatSlice from './chatSlice.js';
+import modalSlice from './modalSlice.js';
+import userReduser from './userSlice.js';
 
 export default configureStore({
   reducer: {
-    users: userReduser,
+    user: userReduser,
+    modal: modalSlice,
+    chat: chatSlice,
   },
 });

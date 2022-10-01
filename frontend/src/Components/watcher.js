@@ -1,38 +1,33 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
-import i18n from 'i18next';
+import { onWatcher } from '../store/userSlice.js';
 import {
   addMessages,
-  onWatcher,
   addChannel,
   removeChannel,
   renameChannel,
   setChannel,
-} from '../store/usersSlice.js';
+} from '../store/chatSlice.js';
 
-const ToastNewChannel = () => toast.success(i18n.t('toast.NewChannel'));
-const ToastRenameChannel = () => toast.success(i18n.t('toast.RenameChannel'));
-const ToastRemoveChannel = () => toast.success(i18n.t('toast.RemoveChannel'));
 const Watcher = (socket) => {
-  const { watcher } = useSelector((state) => state.users);
+  const { watcher } = useSelector((state) => state.user);
+  // const { waitSwitchChanell } = useSelector((state) => state.chat);
   const dispatch = useDispatch();
 
   if (watcher === 'off') {
-    socket.on('newChannel', (payload) => {
+    socket.once('newChannel', (payload) => {
       dispatch(addChannel(payload));
+      // if (waitSwitchChanell) {
       dispatch(setChannel(payload.id));
-      ToastNewChannel();
+      // }
     });
     socket.on('newMessage', (payload) => {
       dispatch(addMessages(payload));
     });
     socket.on('removeChannel', (payload) => {
       dispatch(removeChannel(payload));
-      ToastRemoveChannel();
     });
     socket.on('renameChannel', (payload) => {
       dispatch(renameChannel(payload));
-      ToastRenameChannel();
     });
   }
   dispatch(onWatcher());
