@@ -79,7 +79,7 @@ const Chat = (props) => {
   const switchChanel = (e) => {
     const newIdChanel = Number(e.target.attributes.id.nodeValue);
     if (newIdChanel !== activChatId) {
-      dispatch(onWaitSwitchChanell())
+      dispatch(onWaitSwitchChanell());
       dispatch(setChannel(newIdChanel));
     }
   };

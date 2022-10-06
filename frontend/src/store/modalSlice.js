@@ -5,7 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const modalSlice = createSlice({
   name: 'modal',
   initialState: {
-    modalShow: false,      
+    modalShow: false,
     modalType: 'none',
     errorModallog: '',
     errorModalPlace: 'none',
@@ -23,6 +23,6 @@ const modalSlice = createSlice({
 });
 
 export const {
-modalSwitch, setErrorLog
+  modalSwitch, setErrorLog,
 } = modalSlice.actions;
 export default modalSlice.reducer;
