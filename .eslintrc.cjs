@@ -5,7 +5,7 @@ module.exports = {
         'es2021': true
     },    
     'extends': "airbnb",
-    "root": true,
+    //"root": true,
     'rules':{
       "react/prop-types": "off",
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],

@@ -9,11 +9,11 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Authorization from './pages/authorization.js';
 import Chat from './pages/Chat.js';
 import SignUp from './pages/SignUp.js';
 import resources from './resource/index.js';
-import Watcher from './Components/watcher.js';
 import './App.css';
 import './scrollStyle.css';
 
@@ -28,7 +28,7 @@ const App = (props) => {
     .use(intervalPlural)
     .init({ lng: 'ru', resources });
   const localToken = localStorage.getItem('token');
-  Watcher(socket);
+  const { token } = useSelector((state) => state.user);
   return (
     <>
       <Provider config={rollbarConfig}>
@@ -37,16 +37,16 @@ const App = (props) => {
             <Route
               path="/"
               element={
-                localToken !== null ? <Chat socket={socket} /> : <Navigate to="/login" />
+                token !== '' || localToken !== null ? <Chat socket={socket} /> : <Navigate to="/login" />
               }
             />
             <Route
               path="/login"
-              element={localToken !== null ? <Navigate to="/" /> : <Authorization />}
+              element={token !== '' || localToken !== null ? <Navigate to="/" /> : <Authorization />}
             />
             <Route
               path="/signup"
-              element={localToken !== null ? <Navigate to="/" /> : <SignUp />}
+              element={token !== '' || localToken !== null ? <Navigate to="/" /> : <SignUp />}
             />
           </Routes>
         </ErrorBoundary>

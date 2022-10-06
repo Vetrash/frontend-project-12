@@ -4,7 +4,7 @@ import axios from 'axios';
 import i18n from 'i18next';
 import cn from 'classnames';
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import {
   validateUsername,
   validatePassword,
@@ -14,7 +14,6 @@ import { signIn } from '../store/userSlice.js';
 
 const SignUp = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [valid, setValid] = useState({
     errorName: 'none',
@@ -41,7 +40,6 @@ const SignUp = () => {
               login: username,
               token,
             }));
-            navigate('/');
           })
           .catch((err) => {
             if (err.response.status === 409) {

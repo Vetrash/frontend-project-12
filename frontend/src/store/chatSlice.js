@@ -22,8 +22,11 @@ const chatSlice = createSlice({
       state.dataLoad = true;
     },
     setChannel(state, action) {
-      state.activChatId = action.payload;
-      state.waitSwitchChanell = false;
+      if (state.waitSwitchChanell) {
+        state.activChatId = action.payload;
+        state.waitSwitchChanell = false;
+      }
+      
     },
     removeChannel(state, action) {
       const newChannel = state.channels.filter((elem) => {

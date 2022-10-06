@@ -7,7 +7,6 @@ const userSlice = createSlice({
   initialState: {
     token: '',
     login: '',
-    watcher: 'off',
   },
   reducers: {
     signIn(state, action) {
@@ -18,13 +17,10 @@ const userSlice = createSlice({
       state.token = '';
       state.login = '';
     },
-    onWatcher(state) {
-      state.watcher = 'on';
-    },
   },
 });
 
 export const {
-  signIn, onWatcher, signOff,
+  signIn, signOff,
 } = userSlice.actions;
 export default userSlice.reducer;

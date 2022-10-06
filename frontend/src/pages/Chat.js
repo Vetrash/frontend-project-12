@@ -11,6 +11,7 @@ import {
   updateData,
   setChannel,
   setidSelectedChannel,
+  onWaitSwitchChanell,
 } from '../store/chatSlice.js';
 import { modalSwitch } from '../store/modalSlice.js';
 import RenderModal from '../Components/modalAddChannel.js';
@@ -55,7 +56,7 @@ const Chat = (props) => {
     const targetClick = e.target;
     const IsdropdownItem = (targetClick.classList.contains('dropdown-item') || targetClick.classList.contains('dropdown-toggle')
     );
-    if (!IsdropdownItem) {
+    if (!IsdropdownItem && dropMenuRef.current !== null) {
       dropMenuRef.current.classList.remove('show');
     }
   };
@@ -78,6 +79,7 @@ const Chat = (props) => {
   const switchChanel = (e) => {
     const newIdChanel = Number(e.target.attributes.id.nodeValue);
     if (newIdChanel !== activChatId) {
+      dispatch(onWaitSwitchChanell())
       dispatch(setChannel(newIdChanel));
     }
   };
