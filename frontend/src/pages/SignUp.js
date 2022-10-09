@@ -1,7 +1,8 @@
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import i18n from 'i18next';
+// import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -14,7 +15,7 @@ import { signIn } from '../store/userSlice.js';
 
 const SignUp = () => {
   const dispatch = useDispatch();
-
+  const { t } = useTranslation();
   const [valid, setValid] = useState({
     errorName: 'none',
     errorPassword: 'none',
@@ -98,7 +99,7 @@ const SignUp = () => {
     <div className="d-flex flex-column h-100">
       <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
         <div className="container">
-          <Link to="/" className="navbar-brand">{i18n.t('logo')}</Link>
+          <Link to="/" className="navbar-brand">{t('logo')}</Link>
         </div>
       </nav>
       <div className="container-fluid h-100">
@@ -110,7 +111,7 @@ const SignUp = () => {
                   <img src="./img/registration.jpg" className="rounded-circle" alt="Регистрация" />
                 </div>
                 <form className="w-50" onSubmit={formik.handleSubmit}>
-                  <h1 className="text-center mb-4">{i18n.t('signUp')}</h1>
+                  <h1 className="text-center mb-4">{t('signUp')}</h1>
                   <div className="form-floating mb-3">
                     <input
                       placeholder="Логин"
@@ -122,8 +123,8 @@ const SignUp = () => {
                       onBlur={validUsername}
                       value={formik.values.username}
                     />
-                    <label className="form-label" htmlFor="username">{i18n.t('nameUser')}</label>
-                    <div className="invalid-tooltip">{i18n.t(`errorlogin.${valid.errorName}`)}</div>
+                    <label className="form-label" htmlFor="username">{t('nameUser')}</label>
+                    <div className="invalid-tooltip">{t(`errorlogin.${valid.errorName}`)}</div>
                   </div>
                   <div className="form-floating mb-3">
                     <input
@@ -137,8 +138,8 @@ const SignUp = () => {
                       onBlur={validPassword}
                       value={formik.values.password}
                     />
-                    <div className="invalid-tooltip">{i18n.t(`errorPassword.${valid.errorPassword}`)}</div>
-                    <label className="form-label" htmlFor="password">{i18n.t('password')}</label>
+                    <div className="invalid-tooltip">{t(`errorPassword.${valid.errorPassword}`)}</div>
+                    <label className="form-label" htmlFor="password">{t('password')}</label>
                   </div>
                   <div className="form-floating mb-4">
                     <input
@@ -151,10 +152,10 @@ const SignUp = () => {
                       onBlur={validConfirmPassword}
                       value={formik.values.confirmPassword}
                     />
-                    <div className="invalid-tooltip">{i18n.t(`errorConfirmPassword.${valid.errorConfirmPassword}`)}</div>
-                    <label className="form-label" htmlFor="confirmPassword">{i18n.t('confirmPassword')}</label>
+                    <div className="invalid-tooltip">{t(`errorConfirmPassword.${valid.errorConfirmPassword}`)}</div>
+                    <label className="form-label" htmlFor="confirmPassword">{t('confirmPassword')}</label>
                   </div>
-                  <button type="submit" className="w-100 btn btn-outline-primary">{i18n.t('register')}</button>
+                  <button type="submit" className="w-100 btn btn-outline-primary">{t('register')}</button>
                 </form>
               </div>
             </div>

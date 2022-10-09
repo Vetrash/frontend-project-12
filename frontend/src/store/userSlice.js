@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable */
+
 import { createSlice } from '@reduxjs/toolkit';
 
 const userSlice = createSlice({
@@ -13,9 +13,10 @@ const userSlice = createSlice({
       state.token = action.payload.token;
       state.login = action.payload.login;
     },
-    signOff(state, action) {
+    signOff(state) {
       state.token = '';
       state.login = '';
+      localStorage.removeItem('token');
     },
   },
 });

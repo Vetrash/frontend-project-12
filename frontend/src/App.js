@@ -1,6 +1,4 @@
 import React from 'react';
-import i18n from 'i18next';
-import intervalPlural from 'i18next-intervalplural-postprocessor';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider, ErrorBoundary } from '@rollbar/react';
@@ -11,22 +9,18 @@ import {
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Authorization from './pages/authorization.js';
-import Chat from './pages/Chat.js';
+import ChatPage from './pages/ChatPage.js';
 import SignUp from './pages/SignUp.js';
-import resources from './resource/index.js';
+import NotFound from './pages/NotFound.js';
 import './App.css';
 import './scrollStyle.css';
 
 const rollbarConfig = {
-  accessToken: '8e862ee97e2842dda1754ff043dc68b7',
+  accessToken: process.env.ACCESS_TOKEN,
   environment: 'production',
 };
 
-const App = (props) => {
-  const { socket } = props;
-  i18n
-    .use(intervalPlural)
-    .init({ lng: 'ru', resources });
+const App = () => {
   const localToken = localStorage.getItem('token');
   const { token } = useSelector((state) => state.user);
   return (
@@ -37,7 +31,7 @@ const App = (props) => {
             <Route
               path="/"
               element={
-                token !== '' || localToken !== null ? <Chat socket={socket} /> : <Navigate to="/login" />
+                token !== '' || localToken !== null ? <ChatPage /> : <Navigate to="/login" />
               }
             />
             <Route
@@ -48,6 +42,7 @@ const App = (props) => {
               path="/signup"
               element={token !== '' || localToken !== null ? <Navigate to="/" /> : <SignUp />}
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </ErrorBoundary>
       </Provider>

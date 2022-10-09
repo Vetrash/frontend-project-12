@@ -1,56 +1,38 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import cn from 'classnames';
-import i18n from 'i18next';
-import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import filter from 'leo-profanity';
 import { signOff } from '../store/userSlice.js';
 import {
-  updateData,
   setChannel,
   setidSelectedChannel,
-  onWaitSwitchChanell,
+  WaitSwitchChanellOn,
 } from '../store/chatSlice.js';
 import { modalSwitch } from '../store/modalSlice.js';
-import RenderModal from '../Components/modalAddChannel.js';
+import RenderModal from '../Components/modal/RenderModal.js';
+import SocketContext from '../Components/SocketContext.js';
+import getLanguage from '../Components/getLanguage.js';
 
-const Chat = (props) => {
-  const regex = /^[\u0400-\u04FF]+$/;
+const Chat = () => {
   const dispatch = useDispatch();
   const {
     channels,
     messages,
-    dataLoad,
     activChatId,
   } = useSelector((state) => state.chat);
-  const { socket } = props;
+
+  const { socket } = useContext(SocketContext);
+  const { t } = useTranslation();
   const login = localStorage.getItem('login');
   const chatref = useRef();
+  const messageref = useRef();
   const dropMenuRef = useRef();
   const chanelRef = useRef();
   const removeRef = useRef();
   const renameRef = useRef();
-
-  const loading = () => (
-    <div className={cn('h-100', 'position-relative', { 'd-none': dataLoad })}>
-      <img className="position-absolute top-50 start-50 translate-middle" src="./img/loading.gif" alt="loading" />
-    </div>
-  );
-
-  const getNewData = () => {
-    axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
-
-    axios.get('/api/v1/data', {
-      proxy: {
-        host: 'localhost',
-        port: 5001,
-      },
-    }).then((response) => {
-      dispatch(updateData(response.data));
-    });
-  };
 
   const handleClick = (e) => {
     const targetClick = e.target;
@@ -62,24 +44,24 @@ const Chat = (props) => {
   };
 
   useEffect(() => {
-    getNewData();
     document.addEventListener('click', handleClick);
+    messageref.current.focus();
   }, []);
   useEffect(() => {
     if (messages.length !== 0) {
       chatref.current.scrollTop = chatref.current.scrollHeight;
     }
-  }, [messages]);
+    messageref.current.focus();
+  }, [messages, activChatId]);
 
   const clickhandlerlogOut = () => {
     dispatch(signOff());
-    localStorage.removeItem('token');
   };
 
   const switchChanel = (e) => {
     const newIdChanel = Number(e.target.attributes.id.nodeValue);
     if (newIdChanel !== activChatId) {
-      dispatch(onWaitSwitchChanell());
+      dispatch(WaitSwitchChanellOn());
       dispatch(setChannel(newIdChanel));
     }
   };
@@ -112,8 +94,8 @@ const Chat = (props) => {
       data-popper-placement="bottom-start"
       ref={dropMenuRef}
     >
-      <button type="button" onClick={RemoveChannelHandler} className="dropdown-item" ref={removeRef}>{i18n.t('delet')}</button>
-      <button type="button" onClick={RenameChannelHandler} className="dropdown-item" ref={renameRef}>{i18n.t('rename')}</button>
+      <button type="button" onClick={RemoveChannelHandler} className="dropdown-item" ref={removeRef}>{t('delet')}</button>
+      <button type="button" onClick={RenameChannelHandler} className="dropdown-item" ref={renameRef}>{t('rename')}</button>
     </div>
   );
 
@@ -139,7 +121,7 @@ const Chat = (props) => {
                 aria-expanded="false"
                 className={cn('flex-grow-0 dropdown-toggle dropdown-toggle-split btn', { 'btn-secondary': Number(item.id) === activChatId })}
               >
-                <span className="visually-hidden">{i18n.t('channelControl')}</span>
+                <span className="visually-hidden">{t('channelControl')}</span>
               </button>
             </div>
           </li>
@@ -172,8 +154,8 @@ const Chat = (props) => {
     },
     onSubmit: (values) => {
       if (values.message.length !== 0) {
-        const lngName = regex.test(values.message) ? 'ru' : 'en';
-        filter.loadDictionary(lngName);
+        const lng = getLanguage(values.message);
+        filter.loadDictionary(lng);
         const cenztext = filter.clean(values.message);
         socket.emit('newMessage', {
           body: cenztext,
@@ -206,7 +188,7 @@ const Chat = (props) => {
             </p>
             <span className="text-muted">
               {allMessage.length}
-              {i18n.t('messages.key_interval', { postProcess: 'interval', count })}
+              {t('messages.key_interval', { postProcess: 'interval', count })}
             </span>
           </div>
           <div id="messages-box" className="chat-messages overflow-auto px-5 " ref={chatref}>
@@ -238,10 +220,11 @@ const Chat = (props) => {
                   name="message"
                   id="message"
                   aria-label="Новое сообщение"
-                  placeholder={i18n.t('newMessage')}
+                  placeholder={t('newMessage')}
                   className="border-0 p-0 ps-2 form-control"
                   onChange={formik.handleChange}
                   value={formik.values.message}
+                  ref={messageref}
                 />
                 <button type="submit" disabled="" className="btn btn-group-vertical">
                   <img src="./img/send.svg" alt="" />
@@ -253,25 +236,26 @@ const Chat = (props) => {
       </div>
     );
   };
-  const fullChat = () => (
+
+  return (
     <>
-      <div className={cn('h-100', { 'd-none': !dataLoad })}>
+      <div className={cn('h-100')}>
         <div className="h-100" id="chat">
           <div className="d-flex flex-column h-100">
             <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
               <div className="container">
-                <Link to="/" className="navbar-brand">{i18n.t('logo')}</Link>
-                <button onClick={clickhandlerlogOut} type="button" className="btn btn-primary">{i18n.t('exit')}</button>
+                <Link to="/" className="navbar-brand">{t('logo')}</Link>
+                <button onClick={clickhandlerlogOut} type="button" className="btn btn-primary">{t('exit')}</button>
               </div>
             </nav>
             <div className="container h-100 my-4 overflow-hidden rounded shadow">
               <div className="row h-100 bg-white flex-md-row">
                 <div className="d-flex flex-column col-4 col-md-2 border-end pt-5 px-0 bg-light h-100">
                   <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
-                    <span>{i18n.t('channels')}</span>
+                    <span>{t('channels')}</span>
                     <button onClick={addChannel} type="button" className="p-0 text-primary btn btn-group-vertical">
                       <img src="./img/add_box.svg" alt="add" />
-                      <span className="visually-hidden">{i18n.t('addChanel')}</span>
+                      <span className="visually-hidden">{t('addChanel')}</span>
                     </button>
                   </div>
                   {renderChannelsList()}
@@ -282,14 +266,7 @@ const Chat = (props) => {
           </div>
         </div>
       </div>
-      {RenderModal(socket)}
-    </>
-  );
-
-  return (
-    <>
-      {loading()}
-      {fullChat()}
+      {RenderModal()}
     </>
   );
 };

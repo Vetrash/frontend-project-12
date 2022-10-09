@@ -1,26 +1,33 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable */
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+export const updateData = createAsyncThunk(
+  'chat/fetchDataChat',
+  async () => {
+    axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
+    const response = await axios.get('/api/v1/data', {
+      proxy: {
+        host: 'localhost',
+        port: 5001,
+      },
+    });
+    return response.data;
+  },
+);
 
 const chatSlice = createSlice({
   name: 'chat',
   initialState: {
     channels: [],
     messages: [],
-    NameChannelsArr: [],
-    dataLoad: false,
+    isDataLoad: false,
     idSelectedChannel: -1,
     activChatId: 1,
     waitSwitchChanell: false,
+    language: 'ru',
   },
   reducers: {
-    updateData(state, action) {
-      const newNameChannelsArr = action.payload.channels.map((elem) => elem.name);
-      state.channels = action.payload.channels;
-      state.messages = action.payload.messages;
-      state.NameChannelsArr = newNameChannelsArr;
-      state.dataLoad = true;
-    },
     setChannel(state, action) {
       if (state.waitSwitchChanell) {
         state.activChatId = action.payload;
@@ -36,40 +43,47 @@ const chatSlice = createSlice({
         if (elem.id !== action.payload.id) { return true; }
         return false;
       });
-      const newNameChannelsArr = newChannel.map((elem) => elem.name);
+      if (action.payload.id === state.activChatId) {
+        state.activChatId = 1;
+      }
       state.channels = newChannel;
-      state.NameChannelsArr = newNameChannelsArr;
       state.messages = newMessages;
     },
     renameChannel(state, action) {
       const index = state.channels.findIndex((elem) => elem.id === action.payload.id);
       state.channels[index].name = action.payload.name;
-      const newNameChannelsArr = state.channels.map((elem) => elem.name);
-      state.NameChannelsArr = newNameChannelsArr;
     },
     addChannel(state, action) {
       state.channels.push(action.payload);
-      state.NameChannelsArr.push(action.payload.name);
     },
     addMessages(state, action) {
-      const index = state.messages.indexOf((elem) => (elem.id === action.payload.id));
-      if (index === -1) { state.messages.push(action.payload); }
+      state.messages.push(action.payload);
     },
     setidSelectedChannel(state, action) {
       state.idSelectedChannel = action.payload;
     },
-    onWaitSwitchChanell(state, action) {
+    WaitSwitchChanellOn(state) {
       state.waitSwitchChanell = true;
     },
+    setlanguage(state, action) {
+      state.language = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(updateData.fulfilled, (state, action) => {
+      state.channels = action.payload.channels;
+      state.messages = action.payload.messages;
+      state.isDataLoad = true;
+    });
   },
 });
 
 export const {
-  updateData,
   setChannel, removeChannel, addChannel, renameChannel,
   addMessages,
   swithDropMenu,
   setidSelectedChannel,
-  onWaitSwitchChanell,
+  WaitSwitchChanellOn,
+  setlanguage,
 } = chatSlice.actions;
 export default chatSlice.reducer;

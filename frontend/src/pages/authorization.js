@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import { signIn } from '../store/userSlice.js';
 
 const Authorization = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [logErr, setLogErr] = useState('none');
   const formik = useFormik({
     initialValues: {
@@ -35,7 +36,7 @@ const Authorization = () => {
 
   const form = () => (
     <form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
-      <h1 className="text-center mb-4">{i18n.t('enter')}</h1>
+      <h1 className="text-center mb-4">{t('enter')}</h1>
       <div className="form-floating mb-3">
         <input
           onChange={formik.handleChange}
@@ -46,8 +47,8 @@ const Authorization = () => {
           id="username"
           className={cn('form-control', { 'is-invalid': logErr !== 'none' })}
         />
-        <label htmlFor="username">{i18n.t('youNick')}</label>
-        <div className="invalid-tooltip">{i18n.t(`errorlogin.${logErr}`)}</div>
+        <label htmlFor="username">{t('youNick')}</label>
+        <div className="invalid-tooltip">{t(`errorlogin.${logErr}`)}</div>
       </div>
       <div className="form-floating mb-4">
         <input
@@ -60,16 +61,16 @@ const Authorization = () => {
           id="password"
           className="form-control"
         />
-        <label className="form-label" htmlFor="password">{i18n.t('password')}</label>
+        <label className="form-label" htmlFor="password">{t('password')}</label>
       </div>
-      <button type="submit" className="w-100 mb-3 btn btn-outline-primary">{i18n.t('enter')}</button>
+      <button type="submit" className="w-100 mb-3 btn btn-outline-primary">{t('enter')}</button>
     </form>
   );
   return (
     <div className="d-flex flex-column h-100">
       <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
         <div className="container">
-          <Link to="/" className="navbar-brand">{i18n.t('logo')}</Link>
+          <Link to="/" className="navbar-brand">{t('logo')}</Link>
         </div>
         <div className="Toastify" />
       </nav>
@@ -85,8 +86,8 @@ const Authorization = () => {
               </div>
               <div className="card-footer p-4">
                 <div className="text-center">
-                  <span>{i18n.t('notAccount')}</span>
-                  <Link to="/signup">{i18n.t('signUp')}</Link>
+                  <span>{t('notAccount')}</span>
+                  <Link to="/signup">{t('signUp')}</Link>
                 </div>
               </div>
             </div>
