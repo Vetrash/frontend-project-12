@@ -19,7 +19,7 @@ const RenderModal = () => {
   const closeModal = () => {
     dispatch(modalSwitch(false));
   };
-
+  // eslint-disable-next-line
   let bodyModal;
   switch (modalType) {
     case 'add':
