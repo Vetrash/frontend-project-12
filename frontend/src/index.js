@@ -21,7 +21,7 @@ import SocketProvider from './Components/SocketProvider.js';
 const socket = io();
 
 const watchingSocet = () => {
-  socket.once('newChannel', (payload) => {
+  socket.on('newChannel', (payload) => {
     store.dispatch(addChannel(payload));
     store.dispatch(setChannel(payload.id));
   });

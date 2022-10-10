@@ -16,7 +16,8 @@ import getLanguage from '../getLanguage.js';
 const RenameChannelModal = () => {
   const { t } = useTranslation();
   const { socket } = useContext(SocketContext);
-  const { idSelectedChannel, channels } = useSelector((state) => state.chat);
+  const { channels } = useSelector((state) => state.chat);
+  const { idChannel } = useSelector((state) => state.dropDownMenu);
   const NameChannelsArr = channels.map((elem) => elem.name);
   const dispatch = useDispatch();
   const [errorlog, setError] = useState('');
@@ -38,7 +39,7 @@ const RenameChannelModal = () => {
       } else {
         validator(NameChannelsArr, values.rename)
           .then(() => {
-            socket.emit('renameChannel', { id: idSelectedChannel, name: values.rename });
+            socket.emit('renameChannel', { id: idChannel, name: values.rename });
             values.rename = '';
             ToastRenameChannel();
             closeModal();

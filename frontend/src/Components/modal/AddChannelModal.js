@@ -41,9 +41,9 @@ const AddChannelModal = () => {
           .then(() => {
             dispatch(WaitSwitchChanellOn());
             socket.emit('newChannel', { name: values.name });
-            values.name = '';
             ToastNewChannel();
             closeModal();
+            values.name = '';
           })
           .catch((err) => {
             setError(err.message);

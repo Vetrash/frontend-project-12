@@ -12,8 +12,7 @@ import SocketContext from '../SocketContext.js';
 const RemoveChannelModal = () => {
   const { t } = useTranslation();
   const { socket } = useContext(SocketContext);
-  const { idSelectedChannel } = useSelector((state) => state.chat);
-
+  const { idChannel } = useSelector((state) => state.dropDownMenu);
   const dispatch = useDispatch();
 
   const closeModal = () => {
@@ -21,19 +20,19 @@ const RemoveChannelModal = () => {
   };
 
   const submit = () => {
-    socket.emit('removeChannel', { id: idSelectedChannel });
-    dispatch(removeChannel(idSelectedChannel));
+    socket.emit('removeChannel', { id: idChannel });
+    dispatch(removeChannel(idChannel));
     ToastRemoveChannel();
     closeModal();
   };
 
   return (
-    <form onSubmit={submit} className="">
+    <form className="">
       <div>
         <p className="lead">{t('deletLead')}</p>
         <div className="d-flex justify-content-end">
           <button onClick={closeModal} type="button" className="me-2 btn btn-secondary">{t('cancel')}</button>
-          <button type="submit" className="btn btn-danger">{t('delet')}</button>
+          <button onClick={submit} type="button" className="btn btn-danger">{t('delet')}</button>
         </div>
       </div>
     </form>

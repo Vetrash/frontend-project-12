@@ -22,7 +22,6 @@ const chatSlice = createSlice({
     channels: [],
     messages: [],
     isDataLoad: false,
-    idSelectedChannel: -1,
     activChatId: 1,
     waitSwitchChanell: false,
     language: 'ru',
@@ -59,9 +58,6 @@ const chatSlice = createSlice({
     addMessages(state, action) {
       state.messages.push(action.payload);
     },
-    setidSelectedChannel(state, action) {
-      state.idSelectedChannel = action.payload;
-    },
     WaitSwitchChanellOn(state) {
       state.waitSwitchChanell = true;
     },
@@ -82,7 +78,6 @@ export const {
   setChannel, removeChannel, addChannel, renameChannel,
   addMessages,
   swithDropMenu,
-  setidSelectedChannel,
   WaitSwitchChanellOn,
   setlanguage,
 } = chatSlice.actions;
