@@ -3,16 +3,14 @@ import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
-import SocketContext from '../../Components/SocketContext.js';
-import getLanguage from '../../Components/getLanguage.js';
+import SocketContext from '../../../Components/SocketContext.js';
+import getLanguage from '../../../Components/getLanguage.js';
+import { channelState } from '../../../store/channelSlice.js';
+import { messagesState } from '../../../store/messagesSlice.js';
 
 const ChatWindow = () => {
-  const {
-    channels,
-    messages,
-    activChatId,
-  } = useSelector((state) => state.chat);
-
+  const { channels, activChatId } = useSelector(channelState);
+  const { messages } = useSelector(messagesState);
   const { t } = useTranslation();
   const login = localStorage.getItem('login');
   const { socket } = useContext(SocketContext);

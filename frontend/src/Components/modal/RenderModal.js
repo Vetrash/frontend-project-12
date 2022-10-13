@@ -2,7 +2,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { modalSwitch } from '../../store/modalSlice.js';
+import { modalState, modalSwitch } from '../../store/modalSlice.js';
 import AddChannelModal from './AddChannelModal.js';
 import RemoveChannelModal from './RemoveChannelModal.js';
 import RenameChannelModal from './RenameChannelModal.js';
@@ -14,7 +14,7 @@ const RenderModal = () => {
   const {
     modalType,
     modalShow,
-  } = useSelector((state) => state.modal);
+  } = useSelector(modalState);
 
   const closeModal = () => {
     dispatch(modalSwitch(false));

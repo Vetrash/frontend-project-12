@@ -10,12 +10,9 @@ import './index.css';
 import i18n from './i18n.js';
 import App from './App.js';
 import {
-  addMessages,
-  addChannel,
-  removeChannel,
-  renameChannel,
-  setChannel,
-} from './store/chatSlice.js';
+  addChannel, removeChannel, renameChannel, setChannel,
+} from './store/channelSlice.js';
+import { addMessages } from './store/messagesSlice.js';
 import SocketProvider from './Components/SocketProvider.js';
 
 const socket = io();

@@ -5,10 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { useFormik } from 'formik';
 import filter from 'leo-profanity';
-import { WaitSwitchChanellOn } from '../../store/chatSlice.js';
-import {
-  modalSwitch,
-} from '../../store/modalSlice.js';
+import { WaitSwitchChanellOn, channelState } from '../../store/channelSlice.js';
+import { modalSwitch } from '../../store/modalSlice.js';
 import validator from '../validator.js';
 import { ToastNewChannel } from '../toasts.js';
 import SocketContext from '../SocketContext.js';
@@ -17,7 +15,7 @@ import getLanguage from '../getLanguage.js';
 const AddChannelModal = () => {
   const { t } = useTranslation();
   const { socket } = useContext(SocketContext);
-  const { channels } = useSelector((state) => state.chat);
+  const { channels } = useSelector(channelState);
   const NameChannelsArr = channels.map((elem) => elem.name);
   const dispatch = useDispatch();
 

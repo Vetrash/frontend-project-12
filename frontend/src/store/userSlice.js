@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
-
 import { createSlice } from '@reduxjs/toolkit';
+
+export const userState = (state) => state.user;
 
 const userSlice = createSlice({
   name: 'user',

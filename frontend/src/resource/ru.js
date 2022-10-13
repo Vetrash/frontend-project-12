@@ -57,6 +57,7 @@ export default {
     errorConfirmPassword: {
       mismatch: 'Пароли должны совпадать',
       required: 'Поле должно быть заполнено',
+      lengthError: 'Не менее 6 символов',
     },
     toast: {
       NewChannel: 'Канал создан',

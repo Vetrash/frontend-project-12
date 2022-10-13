@@ -1,14 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
-import chatSlice from './chatSlice.js';
+import channelSlice from './channelSlice.js';
 import modalSlice from './modalSlice.js';
 import userReduser from './userSlice.js';
-import dropDownMenuSlice from './dropDownMenuSlice.js';
+import messagesSlice from './messagesSlice.js';
 
 export default configureStore({
   reducer: {
     user: userReduser,
     modal: modalSlice,
-    chat: chatSlice,
-    dropDownMenu: dropDownMenuSlice,
+    channel: channelSlice,
+    messages: messagesSlice,
   },
 });

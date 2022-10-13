@@ -2,8 +2,9 @@
 import { useTranslation } from 'react-i18next';
 import React, { useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeChannel } from '../../store/chatSlice.js';
+import { removeChannel } from '../../store/channelSlice.js';
 import {
+  modalState,
   modalSwitch,
 } from '../../store/modalSlice.js';
 import { ToastRemoveChannel } from '../toasts.js';
@@ -12,7 +13,7 @@ import SocketContext from '../SocketContext.js';
 const RemoveChannelModal = () => {
   const { t } = useTranslation();
   const { socket } = useContext(SocketContext);
-  const { idChannel } = useSelector((state) => state.dropDownMenu);
+  const { idChannel } = useSelector(modalState);
   const dispatch = useDispatch();
 
   const closeModal = () => {

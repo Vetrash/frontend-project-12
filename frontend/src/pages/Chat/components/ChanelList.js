@@ -1,26 +1,48 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
-import {
-  setChannel,
-  WaitSwitchChanellOn,
-} from '../../store/chatSlice.js';
-import { modalSwitch } from '../../store/modalSlice.js';
-import DropDownMenu, { ActivDropMenu } from './DropDownMenu.js';
+import { channelState, setChannel, WaitSwitchChanellOn } from '../../../store/channelSlice.js';
+import { modalSwitch } from '../../../store/modalSlice.js';
+import DropDownMenu from './DropDownMenu.js';
 
 const ChannelList = () => {
   const dispatch = useDispatch();
   const {
     channels,
     activChatId,
-  } = useSelector((state) => state.chat);
+  } = useSelector(channelState);
+  const [dropDownMenu, setDropDownMenu] = useState({
+    isShow: false,
+    elem: '',
+    chanelList: '',
+  });
 
   const { t } = useTranslation();
   const chanelRef = useRef();
   const showDropMenu = (elem) => {
-    ActivDropMenu({ elem, chanelList: chanelRef.current });
+    setDropDownMenu({
+      isShow: true,
+      elem,
+      chanelList: chanelRef.current,
+    });
   };
+  const handleClick = (e) => {
+    const targetClick = e.target;
+    const IsdropdownItem = (targetClick.classList.contains('dropdown-item') || targetClick.classList.contains('dropdown-toggle')
+    );
+    if (!IsdropdownItem) {
+      setDropDownMenu({
+        isShow: false,
+        elem: '',
+        chanelList: '',
+      });
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClick);
+  }, []);
 
   const switchChanel = (e) => {
     const newIdChanel = Number(e.target.attributes.id.nodeValue);
@@ -84,7 +106,10 @@ const ChannelList = () => {
         </button>
       </div>
       <ul className="nav flex-column nav-pills nav-fill px-2 overflow-auto flex-grow-1 flex-nowrap myscroll mb-3" ref={chanelRef}>
-        <DropDownMenu />
+        <DropDownMenu
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...dropDownMenu}
+        />
         {list}
       </ul>
     </>

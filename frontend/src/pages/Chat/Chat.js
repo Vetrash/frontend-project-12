@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { signOff } from '../store/userSlice.js';
-import RenderModal from '../Components/modal/RenderModal.js';
-import ChannelList from './chatItems/ChanelList.js';
-import ChatWindow from './chatItems/ChatWindow.js';
+import { signOff } from '../../store/userSlice.js';
+import RenderModal from '../../Components/modal/RenderModal.js';
+import ChannelList from './components/ChanelList.js';
+import ChatWindow from './components/ChatWindow.js';
 
 const Chat = () => {
   const dispatch = useDispatch();
