@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Chat from './Chat.js';
 import LoadingPage from './components/LoadingPage.js';
 import { updateData, channelState } from '../../store/channelSlice.js';
-import { signIn, userState,  } from '../../store/userSlice.js';
+import { signIn, userState } from '../../store/userSlice.js';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
@@ -15,7 +15,8 @@ const ChatPage = () => {
     if (token === '') {
       const localToken = localStorage.getItem('token');
       const localLogin = localStorage.getItem('username');
-      dispatch(signIn({ login: localLogin, token: localToken }));}
+      dispatch(signIn({ login: localLogin, token: localToken }));
+    }
   }, []);
 
   return (

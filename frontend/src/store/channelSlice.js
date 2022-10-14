@@ -66,7 +66,7 @@ const channelSlice = createSlice({
       state.isDataLoad = true;
     })
       .addCase(updateData.rejected, (state, action) => {
-        new Error(action.error.message)
+        alert(action.error.message);
       });
   },
 });
