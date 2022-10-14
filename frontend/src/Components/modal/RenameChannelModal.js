@@ -47,7 +47,7 @@ const RenameChannelModal = () => {
       {({ errors }) => (
         <Form>
           <div>
-            <Field name="rename" className={cn('mb-2', 'form-control', { 'is-invalid': errors.rename })} />
+            <Field name="rename" id="rename" className={cn('mb-2', 'form-control', { 'is-invalid': errors.rename })} />
             <label className="visually-hidden" htmlFor="rename">{t('nameChannel')}</label>
             <ErrorMessage name="rename">{() => <div className="invalid-feedback">{t(`error.${errors.rename}`)}</div>}</ErrorMessage>
             <div className="d-flex justify-content-end">
