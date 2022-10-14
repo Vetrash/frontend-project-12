@@ -17,7 +17,7 @@ const FormAuth = () => {
     <Formik
       initialValues={{ username: '', password: '' }}
       onSubmit={(values, action) => {
-        if (values.username.length >= 3 && values.password.length >= 6) {
+        if (values.username.length !== 0 && values.password.length !== 0) {
           axios.post('/api/v1/login', { username: values.username, password: values.password })
             .then((res) => {
               const { token, username } = res.data;
