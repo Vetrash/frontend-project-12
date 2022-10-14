@@ -39,12 +39,12 @@ const FormAuth = () => {
         <Form className="col-12 col-md-6 mt-3 mt-mb-0">
           <h1 className="text-center mb-4">{t('enter')}</h1>
           <div className="form-floating mb-3">
-            <Field type="username" ref={refusername} name="username" placeholder="Ваш ник" className={cn('form-control', { 'is-invalid': errors.username })} />
+            <Field ref={refusername} name="username"  placeholder="Ваш ник" id="username" className={cn('form-control', { 'is-invalid': errors.username })} />
             <label htmlFor="username">{t('youNick')}</label>
             <ErrorMessage name="username">{() => <div className="invalid-tooltip">{t(`errorlogin.${errors.username}`)}</div>}</ErrorMessage>
           </div>
           <div className="form-floating mb-4">
-            <Field type="password" ref={refpassword} name="password" placeholder="Пароль" className="form-control" />
+            <Field type="password" name="password" placeholder="Пароль"           id="password"className="form-control" />
             <label className="form-label" htmlFor="password">{t('password')}</label>
           </div>
           <button type="submit" className="w-100 mb-3 btn btn-outline-primary">{t('enter')}</button>
