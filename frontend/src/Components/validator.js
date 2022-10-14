@@ -1,5 +1,15 @@
 import * as yup from 'yup';
 
+export const authSchema = yup.object().shape({
+  username: yup.string()
+    .required('lengthError')
+    .min(3, 'lengthError')
+    .max(20, 'lengthError'),
+  password: yup.string()
+    .min(5, 'lengthError')
+    .required('lengthError'),
+});
+
 export const modalNameSchema = (arr) => yup.object().shape({
   name: yup.string()
     .min(3, 'lengthError')

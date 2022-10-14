@@ -46,7 +46,7 @@ const AddChannelModal = () => {
       {({ errors }) => (
         <Form>
           <div>
-            <Field name="name" className={cn('mb-2', 'form-control', { 'is-invalid': errors.name })} />
+            <Field name="name" id="name" className={cn('mb-2', 'form-control', { 'is-invalid': errors.name })} />
             <label className="visually-hidden" htmlFor="name">{t('nameChannel')}</label>
             <ErrorMessage name="name">{() => <div className="invalid-feedback">{t(`error.${errors.name}`)}</div>}</ErrorMessage>
             <div className="d-flex justify-content-end">
