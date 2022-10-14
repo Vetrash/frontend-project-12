@@ -1,25 +1,30 @@
 import * as yup from 'yup';
 
-const schema = (arr) => yup
-  .string()
-  .min(3, 'lengthError')
-  .max(20, 'lengthError')
-  .required('required')
-  .notOneOf(arr, 'duplicate');
-
-const validator = (NameChannelsArr, string) => schema(NameChannelsArr).validate(string);
-export default validator;
+export const modalNameSchema = (arr) => yup.object().shape({
+  name: yup.string()
+    .min(3, 'lengthError')
+    .max(20, 'lengthError')
+    .required('required')
+    .notOneOf(arr, 'duplicate'),
+});
+export const modalRenameSchema = (arr) => yup.object().shape({
+  rename: yup.string()
+    .min(3, 'lengthError')
+    .max(20, 'lengthError')
+    .required('required')
+    .notOneOf(arr, 'duplicate'),
+});
 
 export const SignupSchema = yup.object().shape({
   username: yup.string()
+    .required('lengthError')
     .min(3, 'lengthError')
-    .max(20, 'lengthError')
-    .required('required'),
+    .max(20, 'lengthError'),
   password: yup.string()
     .min(6, 'lengthError')
-    .required('required'),
+    .required('lengthError'),
   confirmPassword: yup.string()
     .min(6, 'lengthError')
-    .required('required')
+    .required('mismatch')
     .oneOf([yup.ref('password'), null], 'mismatch'),
 });
