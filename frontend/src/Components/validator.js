@@ -2,12 +2,9 @@ import * as yup from 'yup';
 
 export const authSchema = yup.object().shape({
   username: yup.string()
-    .required('lengthError')
-    .min(3, 'lengthError')
-    .max(20, 'lengthError'),
+    .required('required'),
   password: yup.string()
-    .min(5, 'lengthError')
-    .required('lengthError'),
+    .required('required'),
 });
 
 export const modalNameSchema = (arr) => yup.object().shape({
