@@ -3,47 +3,42 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import Authorization from './pages/authorization/authorization.js';
 import ChatPage from './pages/Chat/ChatPage.js';
 import SignUp from './pages/SignUp/SignUp.js';
 import NotFound from './pages/NotFound/NotFound.js';
 import './App.css';
 import './scrollStyle.css';
-import { userState } from './store/userSlice.js';
+import PrivateOutlet from './Components/PrivateOutlet.js';
 
 const rollbarConfig = {
   accessToken: process.env.ACCESS_TOKEN,
   environment: 'production',
 };
 
-const App = () => {
-  const localToken = localStorage.getItem('token');
-  const { token } = useSelector(userState);
-  return (
-    <>
-      <Provider config={rollbarConfig}>
-        <ErrorBoundary>
-          <Routes>
-            <Route
-              path="/"
-              element={token !== '' || localToken !== null ? <ChatPage /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/login"
-              element={token !== '' || localToken !== null ? <Navigate to="/" /> : <Authorization />}
-            />
-            <Route
-              path="/signup"
-              element={token !== '' || localToken !== null ? <Navigate to="/" /> : <SignUp />}
-            />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </ErrorBoundary>
-      </Provider>
-      <ToastContainer />
-    </>
-  );
-};
+const App = () => (
+  <>
+    <Provider config={rollbarConfig}>
+      <ErrorBoundary>
+        <Routes>
+          <Route path="/" element={<PrivateOutlet alt={<Navigate to="/login" />} />}>
+            <Route path="/" element={<ChatPage />} />
+          </Route>
+
+          <Route path="/login" element={<PrivateOutlet alt={<Authorization />} />}>
+            <Route path="/login" element={<ChatPage />} />
+          </Route>
+
+          <Route path="/signup" element={<PrivateOutlet alt={<SignUp />} />}>
+            <Route path="/signup" element={<ChatPage />} />
+          </Route>
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </ErrorBoundary>
+    </Provider>
+    <ToastContainer />
+  </>
+);
 
 export default App;

@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { SignupSchema } from '../../../Components/validator.js';
 import { signIn } from '../../../store/userSlice.js';
 
@@ -50,7 +51,8 @@ const FormSignUp = () => {
             <label className="form-label" htmlFor="confirmPassword">{t('confirmPassword')}</label>
             <ErrorMessage name="confirmPassword">{() => <div className="invalid-tooltip">{t(`errorConfirmPassword.${errors.confirmPassword}`)}</div>}</ErrorMessage>
           </div>
-          <button type="submit" className="w-100 btn btn-outline-primary">{t('register')}</button>
+          <button type="submit" className="w-100 btn btn-outline-primary mb-3">{t('register')}</button>
+          <Link to="/" className="text-center d-block">{t('onMainPage')}</Link>
         </Form>
       )}
     </Formik>

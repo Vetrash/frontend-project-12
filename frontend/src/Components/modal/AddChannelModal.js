@@ -7,7 +7,7 @@ import {
   Formik, Field, ErrorMessage, Form,
 } from 'formik';
 import filter from 'leo-profanity';
-import { WaitSwitchChanellOn, channelState } from '../../store/channelSlice.js';
+import { channelState, setChannel } from '../../store/channelSlice.js';
 import { modalSwitch } from '../../store/modalSlice.js';
 import { modalNameSchema } from '../validator.js';
 import { ToastNewChannel } from '../toasts.js';
@@ -35,8 +35,9 @@ const AddChannelModal = () => {
         if (filter.check(values.name)) {
           actions.setErrors({ name: 'badWord' });
         } else {
-          dispatch(WaitSwitchChanellOn());
-          socket.emit('newChannel', { name: values.name });
+          socket.emit('newChannel', { name: values.name }, (payload) => {
+            dispatch(setChannel(payload.data.id));
+          });
           ToastNewChannel();
           closeModal();
           values.name = '';

@@ -26,15 +26,11 @@ const channelSlice = createSlice({
     channels: [],
     isDataLoad: false,
     activChatId: 1,
-    waitSwitchChanell: false,
     language: 'ru',
   },
   reducers: {
     setChannel(state, action) {
-      if (state.waitSwitchChanell) {
-        state.activChatId = action.payload;
-        state.waitSwitchChanell = false;
-      }
+      state.activChatId = action.payload;
     },
     removeChannel(state, action) {
       const newChannel = state.channels.filter((elem) => {
@@ -52,9 +48,6 @@ const channelSlice = createSlice({
     },
     addChannel(state, action) {
       state.channels.push(action.payload);
-    },
-    WaitSwitchChanellOn(state) {
-      state.waitSwitchChanell = true;
     },
     setlanguage(state, action) {
       state.language = action.payload;
@@ -74,7 +67,6 @@ const channelSlice = createSlice({
 export const {
   setChannel, removeChannel, addChannel, renameChannel,
   swithDropMenu,
-  WaitSwitchChanellOn,
   setlanguage,
 } = channelSlice.actions;
 export default channelSlice.reducer;

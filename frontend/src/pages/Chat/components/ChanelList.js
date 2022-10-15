@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { channelState, setChannel, WaitSwitchChanellOn } from '../../../store/channelSlice.js';
+import { channelState, setChannel } from '../../../store/channelSlice.js';
 import { modalSwitch } from '../../../store/modalSlice.js';
 import DropDownMenu from './DropDownMenu.js';
 
@@ -47,7 +47,6 @@ const ChannelList = () => {
   const switchChanel = (e) => {
     const newIdChanel = Number(e.target.attributes.id.nodeValue);
     if (newIdChanel !== activChatId) {
-      dispatch(WaitSwitchChanellOn());
       dispatch(setChannel(newIdChanel));
     }
   };

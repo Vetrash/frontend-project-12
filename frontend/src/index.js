@@ -10,7 +10,7 @@ import './index.css';
 import i18n from './i18n.js';
 import App from './App.js';
 import {
-  addChannel, removeChannel, renameChannel, setChannel,
+  addChannel, removeChannel, renameChannel,
 } from './store/channelSlice.js';
 import { addMessages } from './store/messagesSlice.js';
 import SocketProvider from './Components/SocketProvider.js';
@@ -20,7 +20,6 @@ const socket = io();
 const watchingSocet = () => {
   socket.on('newChannel', (payload) => {
     store.dispatch(addChannel(payload));
-    store.dispatch(setChannel(payload.id));
   });
   socket.on('newMessage', (payload) => {
     store.dispatch(addMessages(payload));
