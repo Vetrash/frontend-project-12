@@ -52,7 +52,8 @@ const FormSignUp = () => {
             <ErrorMessage name="confirmPassword">{() => <div className="invalid-tooltip">{t(`errorConfirmPassword.${errors.confirmPassword}`)}</div>}</ErrorMessage>
           </div>
           <button type="submit" className="w-100 btn btn-outline-primary mb-3">{t('register')}</button>
-          <Link to="/" className="text-center d-block">{t('onMainPage')}</Link>
+          <p className="text-center mb-0">{t('haveAcount')}</p>
+          <Link to="/" className="text-center d-block">{t('enter')}</Link>
         </Form>
       )}
     </Formik>

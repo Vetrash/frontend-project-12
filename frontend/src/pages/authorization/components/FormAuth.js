@@ -46,7 +46,7 @@ const FormAuth = () => {
             <label className="form-label" htmlFor="password">{t('password')}</label>
             <ErrorMessage name="password">{() => <div className="invalid-tooltip">{t(`errorPassword.${errors.password}`)}</div>}</ErrorMessage>
           </div>
-          <button type="submit" className="w-100 mb-3 btn btn-outline-primary">{t('enter')}</button>
+          <button type="submit" className="w-100 mb-3 btn btn-outline-primary">{t('entering')}</button>
         </Form>
       )}
     </Formik>

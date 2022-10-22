@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { modalState, modalSwitch } from '../../store/modalSlice.js';
@@ -13,28 +13,24 @@ const RenderModal = () => {
   const { t } = useTranslation();
   const {
     modalType,
-    modalShow,
+    isModalShow,
   } = useSelector(modalState);
 
   const closeModal = () => {
     dispatch(modalSwitch(false));
   };
-  // eslint-disable-next-line
-  let bodyModal;
-  switch (modalType) {
-    case 'add':
-      bodyModal = <AddChannelModal />;
-      break;
-    case 'rename':
-      bodyModal = <RenameChannelModal />;
-      break;
-    case 'remove':
-      bodyModal = <RemoveChannelModal />;
-      break;
-    default:
-      bodyModal = <UnknownErrorModal />;
-      break;
-  }
+  const bodyModal = useMemo(() => {
+    switch (modalType) {
+      case 'add':
+        return <AddChannelModal />;
+      case 'rename':
+        return <RenameChannelModal />;
+      case 'remove':
+        return <RemoveChannelModal />;
+      default:
+        return <UnknownErrorModal />;
+    }
+  });
 
   const render = (
     <>
@@ -54,7 +50,7 @@ const RenderModal = () => {
       </div>
     </>
   );
-  return modalShow ? render : '';
+  return isModalShow ? render : null;
 };
 
 export default RenderModal;

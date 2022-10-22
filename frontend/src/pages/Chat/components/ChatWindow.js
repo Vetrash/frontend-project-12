@@ -13,7 +13,7 @@ const ChatWindow = () => {
   const { messages } = useSelector(messagesState);
   const { t } = useTranslation();
   const login = localStorage.getItem('login');
-  const { socket } = useContext(SocketContext);
+  const { NewMessage } = useContext(SocketContext);
   const chatref = useRef();
   const messageref = useRef();
 
@@ -36,11 +36,7 @@ const ChatWindow = () => {
         const lng = getLanguage(values.message);
         filter.loadDictionary(lng);
         const cenztext = filter.clean(values.message);
-        socket.emit('newMessage', {
-          body: cenztext,
-          channelId: activChatId,
-          username: localStorage.getItem('login'),
-        });
+        NewMessage(cenztext, activChatId);
         /* eslint-disable no-param-reassign */
         values.message = '';
         /* eslint-disable no-param-reassign */

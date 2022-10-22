@@ -8,7 +8,6 @@ const PrivateOutlet = (props) => {
   const localToken = localStorage.getItem('token');
   const isAuth = token !== '' || localToken !== null;
   const { alt } = props;
-  console.log(alt);
   return isAuth ? <Outlet /> : alt;
 };
 

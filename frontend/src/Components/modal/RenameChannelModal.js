@@ -16,7 +16,7 @@ import { channelState } from '../../store/channelSlice.js';
 
 const RenameChannelModal = () => {
   const { t } = useTranslation();
-  const { socket } = useContext(SocketContext);
+  const { RenameChannel } = useContext(SocketContext);
   const { channels } = useSelector(channelState);
   const { idChannel } = useSelector(modalState);
   const NameChannelsArr = channels.map((elem) => elem.name);
@@ -34,10 +34,9 @@ const RenameChannelModal = () => {
         const lng = getLanguage(values.rename);
         filter.loadDictionary(lng);
         if (filter.check(values.rename)) {
-          console.log('badWord');
           actions.setErrors({ rename: 'badWord' });
         } else {
-          socket.emit('renameChannel', { id: idChannel, name: values.rename });
+          RenameChannel(idChannel, values.rename);
           ToastRenameChannel();
           closeModal();
           values.rename = '';

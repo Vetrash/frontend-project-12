@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const channelState = (state) => state.channel;
-
+export const getChannelsNames = (state) => state.channel.channels.map((elem) => elem.name);
 export const updateData = createAsyncThunk(
   'chat/fetchDataChat',
   async (header) => {

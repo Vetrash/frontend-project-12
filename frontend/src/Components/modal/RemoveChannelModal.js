@@ -12,7 +12,7 @@ import SocketContext from '../SocketContext.js';
 
 const RemoveChannelModal = () => {
   const { t } = useTranslation();
-  const { socket } = useContext(SocketContext);
+  const { RemoveChannel } = useContext(SocketContext);
   const { idChannel } = useSelector(modalState);
   const dispatch = useDispatch();
 
@@ -21,7 +21,7 @@ const RemoveChannelModal = () => {
   };
 
   const submit = () => {
-    socket.emit('removeChannel', { id: idChannel });
+    RemoveChannel(idChannel);
     dispatch(removeChannel(idChannel));
     ToastRemoveChannel();
     closeModal();

@@ -7,7 +7,7 @@ import {
   Formik, Field, ErrorMessage, Form,
 } from 'formik';
 import filter from 'leo-profanity';
-import { channelState, setChannel } from '../../store/channelSlice.js';
+import { getChannelsNames } from '../../store/channelSlice.js';
 import { modalSwitch } from '../../store/modalSlice.js';
 import { modalNameSchema } from '../validator.js';
 import { ToastNewChannel } from '../toasts.js';
@@ -16,9 +16,8 @@ import getLanguage from '../getLanguage.js';
 
 const AddChannelModal = () => {
   const { t } = useTranslation();
-  const { socket } = useContext(SocketContext);
-  const { channels } = useSelector(channelState);
-  const NameChannelsArr = channels.map((elem) => elem.name);
+  const { NewChannel } = useContext(SocketContext);
+  const сhannelsNames = useSelector(getChannelsNames);
   const dispatch = useDispatch();
 
   const closeModal = () => {
@@ -28,16 +27,14 @@ const AddChannelModal = () => {
   return (
     <Formik
       initialValues={{ name: '' }}
-      validationSchema={modalNameSchema(NameChannelsArr)}
+      validationSchema={modalNameSchema(сhannelsNames)}
       onSubmit={(values, actions) => {
         const lng = getLanguage(values.name);
         filter.loadDictionary(lng);
         if (filter.check(values.name)) {
           actions.setErrors({ name: 'badWord' });
         } else {
-          socket.emit('newChannel', { name: values.name }, (payload) => {
-            dispatch(setChannel(payload.data.id));
-          });
+          NewChannel(values.name);
           ToastNewChannel();
           closeModal();
           values.name = '';

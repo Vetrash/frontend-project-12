@@ -26,11 +26,11 @@ const App = () => (
           </Route>
 
           <Route path="/login" element={<PrivateOutlet alt={<Authorization />} />}>
-            <Route path="/login" element={<ChatPage />} />
+            <Route path="/login" element={<Navigate to="/" />} />
           </Route>
 
           <Route path="/signup" element={<PrivateOutlet alt={<SignUp />} />}>
-            <Route path="/signup" element={<ChatPage />} />
+            <Route path="/signup" element={<Navigate to="/" />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
