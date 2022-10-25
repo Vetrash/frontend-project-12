@@ -7,12 +7,12 @@ import {
   modalState,
   modalSwitch,
 } from '../../store/modalSlice.js';
-import { ToastRemoveChannel } from '../toasts.js';
-import SocketContext from '../SocketContext.js';
+import { toastRemoveChannel } from '../toasts.js';
+import { getSocketContext } from '../SocketProvider.js';
 
 const RemoveChannelModal = () => {
   const { t } = useTranslation();
-  const { RemoveChannel } = useContext(SocketContext);
+  const { delChannel } = useContext(getSocketContext);
   const { idChannel } = useSelector(modalState);
   const dispatch = useDispatch();
 
@@ -21,9 +21,9 @@ const RemoveChannelModal = () => {
   };
 
   const submit = () => {
-    RemoveChannel(idChannel);
+    delChannel(idChannel);
     dispatch(removeChannel(idChannel));
-    ToastRemoveChannel();
+    toastRemoveChannel();
     closeModal();
   };
 

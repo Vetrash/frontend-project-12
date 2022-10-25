@@ -50,48 +50,32 @@ const ChannelList = () => {
       dispatch(setChannel(newIdChanel));
     }
   };
+  const dropMenu = (item) => (
+    <button
+      onClick={showDropMenu}
+      type="button"
+      id={item.id}
+      aria-expanded="false"
+      className={cn('flex-grow-0 dropdown-toggle dropdown-toggle-split btn rounded-end', { 'btn-secondary': Number(item.id) === activChatId })}
+    >
+      <span className="visually-hidden">{t('channelControl')}</span>
+    </button>
+  );
 
-  const list = channels.map((item) => {
-    if (item.removable) {
-      return (
-        <li className="nav-item w-100 flex-grow-0" key={item.id}>
-          <div role="group" className="d-flex dropdown btn-group">
-            <button
-              onClick={switchChanel}
-              type="button"
-              className={cn('w-100  btn  rounded-0 text-start text-truncate', { 'btn-secondary': Number(item.id) === activChatId })}
-              id={item.id}
-            >
-              <span className="me-1">#</span>
-              {item.name}
-            </button>
-            <button
-              onClick={showDropMenu}
-              type="button"
-              id={item.id}
-              aria-expanded="false"
-              className={cn('flex-grow-0 dropdown-toggle dropdown-toggle-split btn', { 'btn-secondary': Number(item.id) === activChatId })}
-            >
-              <span className="visually-hidden">{t('channelControl')}</span>
-            </button>
-          </div>
-        </li>
-      );
-    }
-    return (
-      <li className="nav-item w-100 flex-grow-0" key={item.id}>
-        <button
-          onClick={switchChanel}
-          type="button"
-          className={cn('w-100 btn rounded-0 text-start text-truncate', { 'btn-secondary': Number(item.id) === activChatId })}
-          id={item.id}
-        >
-          <span className="me-1">#</span>
-          {item.name}
-        </button>
-      </li>
-    );
-  });
+  const list = channels.map((item) => (
+    <li className="d-flex nav-item w-100 flex-grow-0 btn-group" key={item.id}>
+      <button
+        onClick={switchChanel}
+        type="button"
+        className={cn('w-100 btn text-start text-truncate btn', { 'btn-secondary': Number(item.id) === activChatId })}
+        id={item.id}
+      >
+        <span className="me-1">#</span>
+        {item.name}
+      </button>
+      {item.removable ? dropMenu(item) : null}
+    </li>
+  ));
   const addChannel = () => {
     dispatch(modalSwitch({ show: true, modalType: 'add' }));
   };

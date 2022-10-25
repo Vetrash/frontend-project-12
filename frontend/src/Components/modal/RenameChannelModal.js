@@ -9,14 +9,14 @@ import {
 import filter from 'leo-profanity';
 import { modalState, modalSwitch } from '../../store/modalSlice.js';
 import { modalRenameSchema } from '../validator.js';
-import { ToastRenameChannel } from '../toasts.js';
-import SocketContext from '../SocketContext.js';
+import { toastRenameChannel } from '../toasts.js';
+import { getSocketContext } from '../SocketProvider.js';
 import getLanguage from '../getLanguage.js';
 import { channelState } from '../../store/channelSlice.js';
 
 const RenameChannelModal = () => {
   const { t } = useTranslation();
-  const { RenameChannel } = useContext(SocketContext);
+  const { renameChannel } = useContext(getSocketContext);
   const { channels } = useSelector(channelState);
   const { idChannel } = useSelector(modalState);
   const NameChannelsArr = channels.map((elem) => elem.name);
@@ -36,8 +36,8 @@ const RenameChannelModal = () => {
         if (filter.check(values.rename)) {
           actions.setErrors({ rename: 'badWord' });
         } else {
-          RenameChannel(idChannel, values.rename);
-          ToastRenameChannel();
+          renameChannel(idChannel, values.rename);
+          toastRenameChannel();
           closeModal();
           values.rename = '';
         }

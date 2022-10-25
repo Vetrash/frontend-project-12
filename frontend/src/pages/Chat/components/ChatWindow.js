@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
-import SocketContext from '../../../Components/SocketContext.js';
+import { getSocketContext } from '../../../Components/SocketProvider.js';
 import getLanguage from '../../../Components/getLanguage.js';
 import { channelState } from '../../../store/channelSlice.js';
 import { messagesState } from '../../../store/messagesSlice.js';
@@ -13,7 +13,7 @@ const ChatWindow = () => {
   const { messages } = useSelector(messagesState);
   const { t } = useTranslation();
   const login = localStorage.getItem('login');
-  const { NewMessage } = useContext(SocketContext);
+  const { newMessage } = useContext(getSocketContext);
   const chatref = useRef();
   const messageref = useRef();
 
@@ -36,7 +36,7 @@ const ChatWindow = () => {
         const lng = getLanguage(values.message);
         filter.loadDictionary(lng);
         const cenztext = filter.clean(values.message);
-        NewMessage(cenztext, activChatId);
+        newMessage(cenztext, activChatId);
         /* eslint-disable no-param-reassign */
         values.message = '';
         /* eslint-disable no-param-reassign */

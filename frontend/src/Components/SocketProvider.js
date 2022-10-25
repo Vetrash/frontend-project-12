@@ -1,34 +1,33 @@
-import { io } from 'socket.io-client';
-import React from 'react';
-import SocketContext from './SocketContext.js';
+import React, { useCallback, useMemo } from 'react';
 import { setChannel } from '../store/channelSlice.js';
 import store from '../store/index.js';
 
-const SocketProvider = ({ children }) => {
-  const socket = io();
-  const NewChannel = (name) => {
+export const getSocketContext = React.createContext({});
+
+const SocketProvider = ({ children, socket }) => {
+  const SocketContext = getSocketContext;
+  const newChannel = useCallback((name) => {
     socket.emit('newChannel', { name }, (payload) => {
       store.dispatch(setChannel(payload.data.id));
     });
-  };
-  const NewMessage = (body, channelId) => {
+  }, []);
+  const newMessage = useCallback((body, channelId) => {
     socket.emit('newMessage', {
       body, channelId, username: localStorage.getItem('login'),
     });
-  };
-  const RemoveChannel = (id) => {
+  }, []);
+  const delChannel = useCallback((id) => {
     socket.emit('removeChannel', { id });
-  };
-  const RenameChannel = (id, name) => {
+  }, []);
+  const renameChannel = useCallback((id, name) => {
     socket.emit('renameChannel', { id, name });
-  };
+  }, []);
+  const valueProw = useMemo(() => ({
+    socket, newChannel, newMessage, delChannel, renameChannel,
+  }), [socket]);
 
   return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <SocketContext.Provider value={{
-      socket, NewChannel, NewMessage, RemoveChannel, RenameChannel,
-    }}
-    >
+    <SocketContext.Provider value={valueProw}>
       {children}
     </SocketContext.Provider>
   );

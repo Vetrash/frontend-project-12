@@ -20,12 +20,14 @@ export const updateData = createAsyncThunk(
   },
 );
 
+const generalChannelid = 1;
+
 const channelSlice = createSlice({
   name: 'channel',
   initialState: {
     channels: [],
     isDataLoad: false,
-    activChatId: 1,
+    activChatId: generalChannelid,
     language: 'ru',
   },
   reducers: {
@@ -38,7 +40,7 @@ const channelSlice = createSlice({
         return false;
       });
       if (action.payload.id === state.activChatId) {
-        state.activChatId = 1;
+        state.activChatId = generalChannelid;
       }
       state.channels = newChannel;
     },
